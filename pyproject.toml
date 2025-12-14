@@ -1,0 +1,59 @@
+[project]
+name = "locomo-agent"
+version = "0.1.0"
+description = "MVP Agent for LoCoMo Long-Term Conversational Memory Evaluation"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Your Name", email = "your@email.com" }]
+
+dependencies = [
+    "openai>=1.0.0",
+    "anthropic>=0.18.0",
+    "httpx>=0.25.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "tiktoken>=0.5.0",
+    "numpy>=1.24.0",
+    "scikit-learn>=1.3.0",
+    "nltk>=3.8.0",
+    "rouge-score>=0.1.2",
+    "tqdm>=4.65.0",
+    "rich>=13.0.0",
+    "faiss-cpu>=1.7.4",
+    "sentence-transformers>=2.2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "ruff>=0.1.0",
+    "mypy>=1.5.0",
+]
+
+[project.scripts]
+locomo-eval = "locomo_agent.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "B", "C4", "SIM"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
