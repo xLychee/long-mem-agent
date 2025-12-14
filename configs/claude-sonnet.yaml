@@ -1,0 +1,27 @@
+# Experiment: Claude 3.5 Sonnet
+# Usage: python scripts/run_experiment.py --config configs/claude-sonnet.yaml
+
+model:
+  name: claude-3-5-sonnet-20241022
+  provider: anthropic
+  temperature: 0.0
+  max_tokens: 256
+
+use_rag: true
+
+retriever:
+  model_name: all-MiniLM-L6-v2
+  top_k: 5
+  chunk_size: 5
+  chunk_overlap: 2
+  use_observations: false
+  use_summaries: false
+
+evaluation:
+  experiment_name: claude-sonnet-baseline
+  output_dir: ./results
+  save_predictions: true
+  tags:
+    - baseline
+    - anthropic
+

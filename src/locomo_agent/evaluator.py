@@ -10,9 +10,26 @@ from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.table import Table
 
-from .agent import LoCoMoAgent
 from .data_loader import load_locomo_dataset
 from .data_models import Conversation, EvaluationSummary
+
+# Type alias for agent - supports both original and V2 agent
+# Using Any to support duck typing for any agent with prepare_conversation and evaluate_qa methods
+from typing import Protocol, runtime_checkable
+
+
+@runtime_checkable
+class AgentProtocol(Protocol):
+    """Protocol for LoCoMo agents."""
+
+    def prepare_conversation(
+        self,
+        conversation: Conversation,
+        use_observations: bool = False,
+        use_summaries: bool = False,
+    ) -> None: ...
+
+    def evaluate_qa(self, qa_annotation: Any) -> dict[str, Any]: ...
 
 logger = logging.getLogger(__name__)
 console = Console()
@@ -34,14 +51,14 @@ class LoCoMoEvaluator:
 
     def __init__(
         self,
-        agent: LoCoMoAgent,
+        agent: AgentProtocol,
         dataset_path: Path | str | None = None,
         cache_dir: Path | None = None,
     ) -> None:
         """Initialize the evaluator.
 
         Args:
-            agent: The agent to evaluate.
+            agent: The agent to evaluate (supports LoCoMoAgent or LoCoMoAgentV2).
             dataset_path: Path to dataset file. If None, downloads from GitHub.
             cache_dir: Directory to cache downloaded dataset.
         """

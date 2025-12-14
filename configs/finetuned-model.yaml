@@ -1,0 +1,62 @@
+# Experiment: Your Finetuned Model
+# 
+# For finetuned models, you have several options:
+#
+# Option 1: OpenAI finetuned model
+#   - Upload to OpenAI and use the ft:gpt-xxx model ID
+#
+# Option 2: Ollama local model  
+#   - Create a Modelfile and build: ollama create my-model -f Modelfile
+#   - Or import GGUF: ollama create my-model -f /path/to/model.gguf
+#
+# Option 3: vLLM server
+#   - Start vLLM: python -m vllm.entrypoints.openai.api_server --model /path/to/model
+#   - Use OpenAI-compatible API
+#
+# Option 4: Any OpenAI-compatible API (Together, Anyscale, etc.)
+#   - Set base_url and api_key accordingly
+#
+# Usage: python scripts/run_experiment.py --config configs/finetuned-model.yaml
+
+model:
+  # === Option 1: OpenAI finetuned ===
+  # name: ft:gpt-4o-mini-2024-07-18:your-org::your-model-id
+  # provider: openai
+  
+  # === Option 2: Ollama local ===
+  name: my-finetuned-model
+  provider: ollama
+  base_url: http://localhost:11434/v1
+  
+  # === Option 3: vLLM server ===
+  # name: /path/to/your/model
+  # provider: vllm
+  # base_url: http://localhost:8000/v1
+  
+  # === Option 4: OpenAI-compatible API ===
+  # name: your-model-name
+  # provider: openai_compatible
+  # base_url: https://api.together.xyz/v1
+  # api_key: ${TOGETHER_API_KEY}  # Set in .env or environment
+  
+  temperature: 0.0
+  max_tokens: 256
+
+use_rag: true
+
+retriever:
+  model_name: all-MiniLM-L6-v2
+  top_k: 5
+  chunk_size: 5
+  chunk_overlap: 2
+  use_observations: false
+  use_summaries: false
+
+evaluation:
+  experiment_name: my-finetuned-model
+  output_dir: ./results
+  save_predictions: true
+  tags:
+    - finetuned
+    - custom
+

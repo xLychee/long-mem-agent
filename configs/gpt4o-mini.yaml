@@ -1,0 +1,27 @@
+# Experiment: GPT-4o-mini baseline
+# Usage: python scripts/run_experiment.py --config configs/gpt4o-mini.yaml
+
+model:
+  name: gpt-4o-mini
+  provider: openai
+  temperature: 0.0
+  max_tokens: 256
+
+use_rag: true
+
+retriever:
+  model_name: all-MiniLM-L6-v2
+  top_k: 5
+  chunk_size: 5
+  chunk_overlap: 2
+  use_observations: false
+  use_summaries: false
+
+evaluation:
+  experiment_name: gpt4o-mini-baseline
+  output_dir: ./results
+  save_predictions: true
+  tags:
+    - baseline
+    - openai
+
